@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio slider</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: transparent; color: #242424; }
+    .slider { width: 100%; max-width: 1200px; margin: 0 auto; }
+    .stage { background: #f3f3f3; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .stage img { display: block; width: 100%; height: auto; object-fit: contain; }
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 2px; }
+    .arrows { display: flex; gap: 8px; }
+    button { border: 1px solid #dedede; border-radius: 8px; background: transparent; color: inherit; width: 38px; height: 38px; cursor: pointer; font-size: 20px; }
+    button:hover { background: #eee; }
+    button:focus-visible { outline: 2px solid #3578e5; outline-offset: 2px; }
+    .count { font-size: 13px; color: #666; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <main class="slider" aria-label="Слайдер изображений портфолио">
+    <div class="stage"><img id="slide" src="images/slide-01.svg" alt="Экран проекта 1" /></div>
+    <div class="controls">
+      <div class="arrows">
+        <button id="prev" type="button" aria-label="Предыдущее изображение">‹</button>
+        <button id="next" type="button" aria-label="Следующее изображение">›</button>
+      </div>
+      <span class="count" id="count" aria-live="polite">01 / 03</span>
+    </div>
+  </main>
+  <script>
+    // Добавляй или удаляй изображения в этом списке.
+    const slides = [
+      { src: 'images/slide-01.svg', alt: 'Экран проекта 1' },
+      { src: 'images/slide-02.svg', alt: 'Экран проекта 2' },
+      { src: 'images/slide-03.svg', alt: 'Экран проекта 3' }
+    ];
+    let current = 0;
+    const image = document.getElementById('slide');
+    const count = document.getElementById('count');
+    function showSlide(index) {
+      current = (index + slides.length) % slides.length;
+      image.src = slides[current].src;
+      image.alt = slides[current].alt;
+      count.textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+    }
+    document.getElementById('prev').addEventListener('click', () => showSlide(current - 1));
+    document.getElementById('next').addEventListener('click', () => showSlide(current + 1));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') showSlide(current - 1);
+      if (event.key === 'ArrowRight') showSlide(current + 1);
+    });
+    showSlide(0);
+  </script>
+</body>
+</html>
